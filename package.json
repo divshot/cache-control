@@ -24,5 +24,16 @@
   "bugs": {
     "url": "https://github.com/divshot/cache-control/issues"
   },
-  "homepage": "https://github.com/divshot/cache-control"
+  "homepage": "https://github.com/divshot/cache-control",
+  "devDependencies": {
+    "connect": "^3.0.2",
+    "mocha": "^1.20.1",
+    "supertest": "^0.13.0"
+  },
+  "dependencies": {
+    "fast-url-parser": "^1.0.6-0",
+    "lodash": "^2.4.1",
+    "minimatch": "^0.4.0",
+    "slasher": "^0.1.5"
+  }
 }
