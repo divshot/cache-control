@@ -1,0 +1,28 @@
+{
+  "name": "cache-control",
+  "version": "0.1.0",
+  "description": "Express/Connect middleware to set url cache options with globs",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha test/ --reporter dot"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:divshot/cache-control.git"
+  },
+  "keywords": [
+    "divshot",
+    "superstatic",
+    "caching",
+    "buster"
+  ],
+  "author": "Divshot",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/divshot/cache-control/issues"
+  },
+  "homepage": "https://github.com/divshot/cache-control"
+}
