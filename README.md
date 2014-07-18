@@ -18,7 +18,7 @@ var app = express();
 
 app.use(cache({
   '/index.html': 1000,
-  '/**/*.html': false,
+  '/none/**/*.html': false,
   '/private.html': 'private, max-age=300',
   '/**': 500 // Default to caching all items for 500
 }));
