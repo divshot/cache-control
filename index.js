@@ -3,6 +3,7 @@ var _ = require('lodash');
 var minimatch = require('minimatch');
 var slash = require('slasher');
 var url = require('fast-url-parser');
+var regular = require('regular');
 
 module.exports = function (options) {
   options = options || {};
@@ -20,13 +21,17 @@ module.exports = function (options) {
         matched = true;
        
         if (val === false) res.setHeader('Cache-Control', 'no-cache');
-        if (_.isNumber(val)) res.setHeader('Cache-Control', 'public, max-age=' + val.toString());
-        if (_.isString(val)) res.setHeader('Cache-Control', val);
+        else if (isNumber(val)) res.setHeader('Cache-Control', 'public, max-age=' + val.toString());
+        else if (_.isString(val)) res.setHeader('Cache-Control', val);
       }
     });
 
     if (!matched) res.setHeader('Cache-Control', 'public, max-age=300');
     
     next();
+    
+    function isNumber (val) {
+      return _.isNumber(val) || regular.number.test(val);
+    }
   };
 };

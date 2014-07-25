@@ -2,7 +2,7 @@ var cacheControl = require('../');
 var connect = require('connect');
 var request = require('supertest');
 var caches = {
-  'index.html': 1000,
+  'index.html': "31536000",
   'none.html': false,
   'private.html': 'private, max-age=300'
 };
@@ -18,7 +18,7 @@ describe('cache control middleware', function() {
   it('sets the max age cache header if specified in config file', function (done) {
     request(app)
       .get('/index.html')
-      .expect('Cache-Control', 'public, max-age=1000')
+      .expect('Cache-Control', 'public, max-age=31536000')
       .end(done);
   });
   
