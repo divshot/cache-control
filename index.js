@@ -1,44 +1,33 @@
-var path = require('path');
-var minimatch = require('minimatch');
 var url = require('fast-url-parser');
 var regular = require('regular');
 var onHeaders = require('on-headers');
-var globSlash = require('glob-slash');
 var _isNumber = require('lodash.isnumber');
+var globject = require('globject');
+var slasher = require('glob-slasher');
 
-module.exports = function (options) {
+module.exports = function (cachePaths) {
   
-  options = options || {};
+  cachePaths = cachePaths || {};
   
   return function (req, res, next) {
     
     var pathname = url.parse(req.url).pathname;
-    var matched = false;
-    var _rel = globSlash(pathname);
+    var cacheValues = globject(slasher(cachePaths, {value: false}));
+    var cacheValue = cacheValues(slasher(pathname));
     
     onHeaders(res, function () {
       
       res.setHeader('Cache-Control', 'public, max-age=300');
       
-      Object.keys(options).forEach(function (globKey) {
-        
-        var _glob = globSlash(globKey);
-       
-        if (minimatch(_rel, _glob) && !matched) {
-          var val = options[globKey];
-          matched = true;
-         
-          if (val === false) {
-            res.setHeader('Cache-Control', 'no-cache');
-          }
-          else if (isNumber(val)) {
-            res.setHeader('Cache-Control', 'public, max-age=' + val.toString());
-          }
-          else if (typeof val === 'string') {
-            res.setHeader('Cache-Control', val);
-          }
-        }
-      });
+      if (cacheValue === false) {
+        res.setHeader('Cache-Control', 'no-cache');
+      }
+      else if (isNumber(cacheValue)) {
+        res.setHeader('Cache-Control', 'public, max-age=' + cacheValue.toString());
+      }
+      else if (typeof cacheValue === 'string') {
+        res.setHeader('Cache-Control', cacheValue);
+      }
     });
     
     next();
