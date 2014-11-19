@@ -1,6 +1,6 @@
 {
   "name": "cache-control",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Express/Connect middleware to set url cache options with globs",
   "main": "index.js",
   "directories": {
@@ -32,6 +32,7 @@
     "supertest": "^0.15.0"
   },
   "dependencies": {
+    "cache-header": "^1.0.0",
     "fast-url-parser": "^1.0.6-0",
     "glob-slasher": "^1.0.1",
     "globject": "^1.0.0",
