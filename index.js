@@ -6,20 +6,20 @@ var slasher = require('glob-slasher');
 var setCacheHeader = require('cache-header');
 
 module.exports = function (cachePaths) {
-  
+
   return function (req, res, next) {
-    
+
     var pathname = url.parse(req.url).pathname;
     var cacheValues = globject(slasher(cachePaths || {}, {value: false}));
     var cacheValue = cacheValues(slasher(pathname));
-    
+
     onHeaders(res, function () {
-      
+
       // Default value
-      res.setHeader('Cache-Control', 'public, max-age=300');
+      res.setHeader('Cache-Control', 'no-cache');
       setCacheHeader(res, cacheValue);
     });
-    
+
     next();
   };
 };
