@@ -4,6 +4,7 @@ var onHeaders = require('on-headers');
 var globject = require('globject');
 var slasher = require('glob-slasher');
 var setCacheHeader = require('cache-header');
+var isSuccess = require('is-success')
 
 module.exports = function (cachePaths) {
 
@@ -14,10 +15,9 @@ module.exports = function (cachePaths) {
     var cacheValue = cacheValues(slasher(pathname));
 
     onHeaders(res, function () {
-
-      // Default value
-      res.setHeader('Cache-Control', 'no-cache');
-      setCacheHeader(res, cacheValue);
+      if (res.statusCode && isSuccess(res.statusCode)) {
+        setCacheHeader(res, cacheValue);
+      }
     });
 
     next();

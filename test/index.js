@@ -16,7 +16,11 @@ describe('cache control middleware', function() {
   beforeEach(function () {
 
     app = connect()
-      .use(cacheControl(caches));
+      .use(cacheControl(caches))
+      .use(function (req, res, next) {
+        res.statusCode = 200;
+        res.end('OK!');
+      });
   });
 
   it('sets the max age cache header if specified in config file', function (done) {
@@ -43,28 +47,16 @@ describe('cache control middleware', function() {
       .end(done);
   });
 
-  it('sets cache control to no-cache by default', function(done) {
-
-    request(app)
-      .get('/default.html')
-      .expect('Cache-Control', 'no-cache')
-      .end(done);
-  });
-
-  it('sets the cache control to no-cache by default if no config is provided', function (done) {
-
-    request(app)
-      .get('/default.html')
-      .expect('Cache-Control', 'no-cache')
-      .end(done);
-  });
-
   it('sets cache control using glob negation', function (done) {
 
     var  app = connect()
       .use(cacheControl({
         '!/anything/**': 'negation'
-      }));
+      }))
+      .use(function (req, res, next) {
+        res.statusCode = 200
+        res.end('OK!')
+      });
 
     async.parallel([
       function (cb) {
@@ -72,13 +64,6 @@ describe('cache control middleware', function() {
         request(app)
           .get('/negation')
           .expect('Cache-Control', 'negation')
-          .end(cb);
-      },
-      function (cb) {
-
-        request(app)
-          .get('/anything/test.html')
-          .expect('Cache-Control', 'no-cache')
           .end(cb);
       }
     ], done);
